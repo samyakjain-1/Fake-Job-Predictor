@@ -6,7 +6,7 @@ import csv
 import os
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True) 
+CORS(app, origins="*", allow_headers="*", methods=["GET", "POST", "OPTIONS"])
 
 # Load model and vectorizer
 model = joblib.load("fake_job_detector_model.pkl")
@@ -72,3 +72,10 @@ def feedback():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+@app.after_request
+def after_request(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+    return response
