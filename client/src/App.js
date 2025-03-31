@@ -18,15 +18,18 @@ function App() {
     setFeedbackCorrect(null);
     setCorrectLabel("");
     try {
-      const response = await fetch("http://localhost:5000/predict", {
+      const response = await fetch("https://fake-job-predictor-production.up.railway.app/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
+
       const data = await response.json();
+      console.log("Prediction API response:", data);
       setResult(data);
       setSuspiciousWords(data.suspicious_keywords || []);
     } catch (error) {
+      console.error("Prediction error:", error);
       setResult({ error: "Something went wrong!" });
     } finally {
       setLoading(false);
@@ -43,14 +46,15 @@ function App() {
     };
 
     try {
-      await fetch("http://localhost:5000/feedback", {
+      await fetch("https://fake-job-predictor-production.up.railway.app/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      console.log("✅ Feedback submitted!");
       setFeedbackGiven(true);
     } catch (error) {
-      console.error("Feedback submission failed", error);
+      console.error("Feedback submission failed:", error);
     }
   };
 

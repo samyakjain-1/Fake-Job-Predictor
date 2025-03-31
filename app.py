@@ -6,7 +6,7 @@ import csv
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://fake-job-predictor-frontend-production.up.railway.app"])
 
 # Load model and vectorizer
 model = joblib.load("fake_job_detector_model.pkl")
